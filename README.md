@@ -1,5 +1,5 @@
 # 🚀Discord.Bot🚀
-Discord.Bot is a tool f! Enjoy and do not forget to give it a star. https://discord.gg/jfCpNdxKk
+Discord.Bot is a discord tool that generates, deletes or joins bots for you in few seconds! Enjoy and do not forget to give it a star. https://discord.gg/jfCpNdxKk
 ## 📹 Preview
 ![preview](Preview.PNG)
 ## 🔥 Features
@@ -16,7 +16,7 @@ Discord.Bot is a tool f! Enjoy and do not forget to give it a star. https://disc
 1. Add your proxies in `proxies.txt`
 2. Update `config.json` as you want
 3. Add accounts tokens you have in `tokenss.txt`
-3. Open `main.py`
+3. Open `main.py` (give it a star or you gay)
 
 ## 📄・License
 This project is licensed under the GPL General Public License v3.0 License
