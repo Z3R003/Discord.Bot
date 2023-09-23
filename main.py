@@ -300,7 +300,7 @@ def main():
         with open(file,'r') as f:
            oauth2links = f.read().splitlines()
         start_time3 = time.time()
-        delay = int(input(f'{cyan}[{blue}?{cyan}] delay (7-15 seconds) > '))
+        delay = int(input(f'{cyan}[{blue}?{cyan}] countdown (7-15 seconds) > '))
         for oauth2link in oauth2links:
             webbrowser.open_new(oauth2link)
             joined +=1
