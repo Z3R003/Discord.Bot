@@ -302,9 +302,9 @@ def main():
         start_time3 = time.time()
         delay = int(input(f'{cyan}[{blue}?{cyan}] delay (7-15 seconds) > '))
         for oauth2link in oauth2links:
-            time.sleep(delay)
             webbrowser.open_new(oauth2link)
             joined +=1
+            time.sleep(delay)
         update_title_threads = threading.Thread(target=bot_joiner_title)
         update_title_threads.start()
         threads.append(update_title_threads)
