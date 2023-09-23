@@ -12,6 +12,9 @@ Discord.Bot is a discord tool that generates, deletes or joins bots for you in f
 ✔ Free Or Paid Proxies
 ✔ Easy To Setup & Very Fast
 ```
+## 🥅 ・Goals
+・10 stars for Dm Fucker with these bots ✅
+
 ## ✍️・Setup
 1. Add your proxies in `proxies.txt`
 2. Update `config.json` as you want
