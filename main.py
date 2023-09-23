@@ -1,4 +1,4 @@
-import os, threading, time, uuid, random, json, ctypes, string, sys, string, re
+import os, threading, time, uuid, random, json, ctypes, string, sys, string, re, webbrowser
 
 try:
     import requests
@@ -216,76 +216,6 @@ def bot_generator(session,token,name,intent):
                 time_rn = get_time()
                 print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({red}-{gray}) {red}Ratelimit{gray}")
                 break
-
-def bot_joiner(session,token,oauth2link,administrator,server_id):
-    global total, application_created, enable_intent, bot_tokens, failed, deleted, joined
-    session = check_useproxies()
-    #name = name_gen()
-    output_lock = threading.Lock()    
-    session.headers = {
-        'authorization': token
-    }
-    match_client_id = re.search(f'client_id=(\d+)', oauth2link)
-    if match_client_id:
-        client_id = match_client_id.group(1)
-        with output_lock:
-            time_rn = get_time()
-            print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({pink}~{gray}) {pink}Found Client id{gray} | ", end="")
-            sys.stdout.flush()
-            Write.Print(f"{client_id}\n", Colors.blue_to_cyan, interval=0.000)
-        params = {
-            'client_id': client_id,
-            'scope': 'bot applications.commands',
-        }
-        if administrator == 'y' or administrator == 'Y' or administrator == 'yes':
-            payload = {
-                'authorize': True,
-                'guild_id': server_id,
-                'permissions': "8"
-            }
-        else:
-            payload = {
-                'authorize': True,
-                'guild_id': server_id,
-                'permissions': "0"
-            }
-        while True:
-            try:
-                join = session.post(f'https://discord.com/api/v9/oauth2/authorize', json=payload, params=params)
-                break
-            except:
-                continue
-        if join.status_code == 200:
-            with output_lock:
-                joined += 1
-                time_rn = get_time()
-                print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({green}+{gray}) {green}Bot Joined{gray} | ", end="")
-                sys.stdout.flush()
-                Write.Print(f"{client_id}\n", Colors.blue_to_cyan, interval=0.000)
-                bot_joiner_title()
-        elif join.status_code == 401 and 'Unauthorized' in join.text:
-            with output_lock:
-                time_rn = get_time()
-                print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({red}-{gray}) {red}Invalid Token{gray} | ", end="")
-                sys.stdout.flush()
-                Write.Print(f"{token}\n", Colors.blue_to_cyan, interval=0.000)
-        elif join.status_code == 400 and'captcha_key' in join.text:
-            with output_lock:
-                time_rn = get_time()
-                print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({red}-{gray}) {red}Captcha Required{gray} | ", end="")
-                sys.stdout.flush()
-                Write.Print(f"{token}\n", Colors.blue_to_cyan, interval=0.000)
-        else:
-            with output_lock:
-                time_rn = get_time()
-                print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({red}-{gray}) {red}Unknown Error{gray}", end="")
-                print('\n')       
-    else:   
-        with output_lock:
-            time_rn = get_time()
-            print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({red}-{gray}) {red}Could't Find Client_id{gray}")
-            
-
 def main():
     global total, application_created, enable_intent, bot_tokens, failed, deleted, joined
     with open('config.json','r') as d:
@@ -367,15 +297,13 @@ def main():
         main()
     elif choice == '3' or choice == '03':
         file = input(f'{cyan}[{blue}?{cyan}] .txt file (oauth2_links.txt) > ')
-        token = input(f'{cyan}[{blue}?{cyan}] Account Token > ')
-        administrator = input(f'{cyan}[{blue}?{cyan}] Bots joins with administrator? (y,n) > ' )
-        server_id = input(f'{cyan}[{blue}?{cyan}] Server Id > ')
         with open(file,'r') as f:
            oauth2links = f.read().splitlines()
         start_time3 = time.time()
         print('\n')
         for oauth2link in oauth2links:
-            bot_joiner(session,token,oauth2link,administrator,server_id)
+            webbrowser.open_new(oauth2link)
+            joined +=1
         update_title_threads = threading.Thread(target=bot_joiner_title)
         update_title_threads.start()
         threads.append(update_title_threads)
@@ -384,7 +312,7 @@ def main():
         elapsed_hours = int((elapsed_time % 86400) // 3600)
         elapsed_minutes = int((elapsed_time % 3600) // 60)
         elapsed_seconds = int(elapsed_time % 60)
-        print(f'\n{white}[{blue}!{white}]{green} finished! {cyan}Joined {red}{bot_tokens} {cyan}bots To {red}{server_id} {cyan}in {red}{elapsed_hours}h {elapsed_minutes}m {elapsed_seconds}s')
+        print(f'\n{white}[{blue}!{white}]{green} finished! {cyan}Joined {red}{bot_tokens} {cyan}bots {cyan}in {red}{elapsed_hours}h {elapsed_minutes}m {elapsed_seconds}s')
         input(f'{reset}\nEnter to go back!')
         clear_screen()
         main()
