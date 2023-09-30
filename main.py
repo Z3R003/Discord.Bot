@@ -1,12 +1,15 @@
 import os, threading, time, uuid, random, json, ctypes, string, sys, string, re, webbrowser
 
 try:
+    import discord
+    from discord.ext import commands
     import requests
     import colorama
     import tls_client 
     import pystyle
     import datetime
 except ModuleNotFoundError:
+    os.system('pip install discord')
     os.system('pip install requests')
     os.system('pip install colorama')
     os.system('pip install tls_client')
@@ -36,11 +39,15 @@ bot_tokens = 0
 failed = 0
 deleted = 0
 joined = 0
+messages_send = 0
 with open('tokens.txt', 'r') as t:
     lines = t.readlines()
     tokens = sum(len(line.strip().split()) for line in lines)
+with open('bot_tokens.txt', 'r') as t:
+    lines = t.readlines()
+    b_tokens = sum(len(line.strip().split()) for line in lines)
     
-ctypes.windll.kernel32.SetConsoleTitleW(f"『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens}")
+ctypes.windll.kernel32.SetConsoleTitleW(f"『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens} ~ Bot Tokens : {b_tokens}")
 
 def get_time():
     date = datetime.datetime.now()
@@ -51,16 +58,20 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def bot_generator_title():
-    global total, application_created, enabled_intent, bot_tokens,failed,deleted
-    ctypes.windll.kernel32.SetConsoleTitleW(f"『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens} | Application Created : {application_created} ~ Intent Enabled : {enabled_intent} ~  Bot Tokens : {bot_tokens}")
+    global total, application_created, enabled_intent, bot_tokens,failed,deleted, b_tokens
+    ctypes.windll.kernel32.SetConsoleTitleW(f"『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens} ~ Bot Tokens : {b_tokens} | Application Created : {application_created} ~ Intent Enabled : {enabled_intent} ~  Bot Tokens : {bot_tokens}")
 
 def bot_deleter_title():
-    global total, application_created, enabled_intent, bot_tokens,failed,deleted
-    ctypes.windll.kernel32.SetConsoleTitleW(f'『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens} | Application Deleted : {deleted} / Bot Deleted : {deleted}')
+    global total, application_created, enabled_intent, bot_tokens,failed,deleted, b_tokens
+    ctypes.windll.kernel32.SetConsoleTitleW(f'『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens} ~ Bot Tokens : {b_tokens} | Application Deleted : {deleted} / Bot Deleted : {deleted}')
 
 def bot_joiner_title():
-    global total, application_created, enabled_intent, bot_tokens,failed,deleted, joined
-    ctypes.windll.kernel32.SetConsoleTitleW(f'『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens} | Bots Joined : {joined}')    
+    global total, application_created, enabled_intent, bot_tokens,failed,deleted, joined, b_tokens
+    ctypes.windll.kernel32.SetConsoleTitleW(f'『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens} ~ Bot Tokens : {b_tokens} | Bots Joined : {joined}')    
+
+def dm_fucker_title():
+    global total, application_created, enabled_intent, bot_tokens,failed,deleted, joined, messages_send,b_tokens
+    ctypes.windll.kernel32.SetConsoleTitleW(f'『 Discord.Bot 』 By ~Z3R003~ / Tokens: {tokens} ~ Bot Tokens : {b_tokens} | Messages Send: {messages_send}')  
 
 def load_proxies():
     with open('proxies.txt','r') as p:
@@ -91,7 +102,7 @@ def check_useproxies():
     return session
 
 def bot_deleter(session,token):
-    global total, application_created, enable_intent, bot_tokens, failed, deleted
+    global total, application_created, enabled_intent, bot_tokens, failed, deleted
     session = check_useproxies()
     output_lock = threading.Lock()
     session.headers = {
@@ -216,6 +227,80 @@ def bot_generator(session,token,name,intent):
                 time_rn = get_time()
                 print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({red}-{gray}) {red}Ratelimit{gray}")
                 break
+
+def dm_fucker(bot_token,channel_id,allowed_user_id,bot_nickname):
+    global total, application_created, enabled_intent, bot_tokens, failed, deleted, messages_send
+    intents = discord.Intents.default()
+    intents.members = True
+    intents.message_content = True 
+    client = commands.Bot(command_prefix='!', intents=intents)
+    @client.event
+    async def on_ready():
+        print(f'{green}Bot Working!{reset}')
+        await client.user.edit(username=bot_nickname)
+        channel = client.get_channel(channel_id)
+        if channel:
+            await channel.send('Bot Working!')
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name='Z3R003 On Top'))
+    @client.command()
+    async def dm_all(ctx, *, message=None):
+        global messages_send
+        if message:
+            if str(ctx.author.id) in allowed_user_id:
+                for member in ctx.guild.members:
+                    try:
+                        await member.send(message)
+                        messages_send +=1
+                        dm_fucker_title()
+                    except Exception as e:
+                        pass
+                await ctx.send("Message sent to everyone!")
+                time_rn = get_time()
+                messages_send +=1
+                print(f'{reset}[ {cyan}{time_rn}{reset} ] {gray}({green}{messages_send}{gray}) Message Send To Everyone!{reset}')
+            else:
+                await ctx.send("Dou do not have permissions to use this command!")
+        else:
+            await ctx.send("You didn't provide a message to send.")
+
+    @client.command()
+    async def dm(ctx,times, user:discord.Member,*,message=None):
+        global messages_send
+        for _ in range(int(times)):
+            if message:
+                try:
+                    await user.send(message)
+                    messages_send +=1
+                    dm_fucker_title()
+                    time_rn = get_time()
+                    print(f'{reset}[ {cyan}{time_rn}{reset} ] {gray}({green}{messages_send}{gray}){blue} Message Send To {red}{user.name}!{reset}')
+                except:
+                    await ctx.send('Error!')
+                    print(f'{red}Error!{reset}')
+                    break
+            else:
+                try:
+                    z3r003 = discord.Embed(title="​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​Get Fucked Dumbass", description="z3r003", colour=discord.Colour.red())
+                    z3r003.set_thumbnail(url="https://cdn.discordapp.com/attachments/1125450733647564843/1155499288927944764/lolll.jpg")
+                    z3r003.add_field(name="join or you GAY", value="https://discord.gg/6w7MzY4p", inline=False)
+                    z3r003.add_field(name="Discord", value="https://discord.gg/6w7MzY4p", inline=False)
+                    z3r003.add_field(name="Github", value="https://github.com/Z3R003", inline=False)
+                    z3r003.add_field(name="Youtube", value="https://github.com/Z3R003", inline=False)
+                    await user.send(embed=z3r003)
+                    messages_send +=1
+                    dm_fucker_title()
+                    time_rn = get_time()
+                    print(f'{reset}[ {cyan}{time_rn}{reset} ] {gray}({green}{messages_send}{gray}){blue} Message Send To {red}{user.name}!{reset}')
+                except Exception as e:
+                    await ctx.send('Error!')
+                    print(f'{red}Error!{reset} {e}')
+                    break
+        await ctx.send(f'[{messages_send}] Messages Send To > {user.name} ') 
+    try:
+        client.run(bot_token)
+    except Exception as e:
+        print(e)
+
 def main():
     global total, application_created, enable_intent, bot_tokens, failed, deleted, joined
     with open('config.json','r') as d:
@@ -234,7 +319,7 @@ def main():
                                   ║ By ~Z3R003  github.com/Z3R003 | .gg/jfCpNdxKk  ║
                                   ║════════════════════════════════════════════════║   
                                   ║ [01] Bot Generator     ║  [02] Bot Deleter     ║   
-                                  ║ [03] Bot Joiner        ║  [04] Coming Soon...  ║
+                                  ║ [03] Bot Joiner        ║  [04] Bot Dm Fucker   ║
                                   ╚════════════════════════╩═══════════════════════╝
                                                     Z3R003 ON TOP
                 
@@ -317,6 +402,34 @@ def main():
         input(f'{reset}\nEnter to go back!')
         clear_screen()
         main()
+    elif choice == '4' or choice == '04':
+        file = input(f'{cyan}[{blue}?{cyan}] .txt file (bot_tokens.txt) > ')
+        allowed_user_id = input(f'{cyan}[{blue}?{cyan}] Who is allowed to use the bots? [your USERID] > ')
+        channel_id = input(f'{cyan}[{blue}?{cyan}] Channel Id > ')
+        ask_change_bot_nickname = input(f'{cyan}[{blue}?{cyan}] Change bot nickname?(y,n) > ')
+        if ask_change_bot_nickname == 'y'or ask_change_bot_nickname == 'yes':
+            bot_nickname = input(f'{cyan}[{blue}?{cyan}] Bot nickname > ')
+        else:
+            bot_nickname = 'Z3R003 On TOp'
+        with open('bot_tokens.txt','r') as t:
+            bot_tokens = t.read().splitlines()
+        input(f'''
+{red}- How to use?{reset}
+------------- {blue}
+• {green}!dm {red}[TIMES] [USERID] [TEXT(Custom)]  | {cyan}Example: {blue}!dm 10 1033699223838937128 
+• {green}!dm_all {red}[TEXT]                       | {cyan}Example: {blue}!dm_all Hello | {red}Sends a dm to everyone in the server!
+
+Enter to continue!
+''')
+        for bot_token in bot_tokens:
+            t = threading.Thread(target=dm_fucker, args=(bot_token, channel_id,allowed_user_id,bot_nickname))
+            t.start()
+            threads.append(t)
+        update_title_threads = threading.Thread(target=dm_fucker_title)
+        update_title_threads.start()
+        threads.append(update_title_threads)
+        for thread in threads:
+            thread.join()     
     else:
         clear_screen()
         print(f'{cyan}[{red}!{cyan}]{red} Invalid choice', end=' ')
