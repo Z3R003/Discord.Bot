@@ -410,7 +410,7 @@ def main():
         if ask_change_bot_nickname == 'y'or ask_change_bot_nickname == 'yes':
             bot_nickname = input(f'{cyan}[{blue}?{cyan}] Bot nickname > ')
         else:
-            bot_nickname = 'Z3R003 On TOp'
+            bot_nickname = 'Z3R003 On Top'
         with open('bot_tokens.txt','r') as t:
             bot_tokens = t.read().splitlines()
         input(f'''
