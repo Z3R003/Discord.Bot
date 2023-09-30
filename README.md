@@ -1,5 +1,5 @@
 # 🚀Discord.Bot🚀
-Discord.Bot is a discord tool that generates, deletes or joins bots for you in few seconds! Enjoy and do not forget to give it a star. https://discord.gg/jfCpNdxKk
+Discord.Bot is a discord tool that generates, deletes or joins bots for you in few seconds you can also use them to spam someone in server! Enjoy and do not forget to give it a star. https://discord.gg/jfCpNdxKk
 ## 📹 Preview
 ![preview](Preview.PNG)
 ## 🔥 Features
@@ -7,18 +7,17 @@ Discord.Bot is a discord tool that generates, deletes or joins bots for you in f
 ✔ Discord Bot Generator
 ✔ Discord Bot Deleter
 ✔ Discord Bot Joiner
+✔ Discord Bot Dm Spammer / Dm Fucker
 ✔ Saves Bot Token and The OAuth2 Link in different txt file
 ✔ Multi Threading
 ✔ Free Or Paid Proxies
 ✔ Easy To Setup & Very Fast
 ```
-## 🥅 ・Goals
-・10 stars for Dm Fucker with these bots ✅
-
 ## ✍️・Setup
 1. Add your proxies in `proxies.txt`
 2. Update `config.json` as you want
-3. Add accounts tokens you have in `tokenss.txt`
+3. Add accounts tokens you have in `tokens.txt`
+3. Add bot tokens you have in `bot_tokens.txt`
 3. Open `main.py` (give it a star or you gay)
 
 ## 📄・License
