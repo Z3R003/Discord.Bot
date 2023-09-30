@@ -285,7 +285,7 @@ def dm_fucker(bot_token,channel_id,allowed_user_id,bot_nickname):
                     z3r003.add_field(name="join or you GAY", value="https://discord.gg/6w7MzY4p", inline=False)
                     z3r003.add_field(name="Discord", value="https://discord.gg/6w7MzY4p", inline=False)
                     z3r003.add_field(name="Github", value="https://github.com/Z3R003", inline=False)
-                    z3r003.add_field(name="Youtube", value="https://github.com/Z3R003", inline=False)
+                    z3r003.add_field(name="Youtube", value="https://www.youtube.com/@Z3R003-td2ti", inline=False)
                     await user.send(embed=z3r003)
                     messages_send +=1
                     dm_fucker_title()
