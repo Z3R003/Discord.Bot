@@ -1,21 +1,11 @@
 import os, threading, time, uuid, random, json, ctypes, string, sys, string, re, webbrowser
-
-try:
-    import discord
-    from discord.ext import commands
-    import requests
-    import colorama
-    import tls_client 
-    import pystyle
-    import datetime
-except ModuleNotFoundError:
-    os.system('pip install discord')
-    os.system('pip install requests')
-    os.system('pip install colorama')
-    os.system('pip install tls_client')
-    os.system('pip install pystyle')
-    os.system('pip install datetime')
-
+import discord
+from discord.ext import commands
+import requests
+import colorama
+import tls_client 
+import pystyle
+import datetime
 from colorama import *
 from pystyle import *
 

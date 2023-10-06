@@ -18,7 +18,7 @@ Discord.Bot is a discord tool that generates, deletes or joins bots for you in f
 2. Update `config.json` as you want
 3. Add accounts tokens you have in `tokens.txt`
 3. Add bot tokens you have in `bot_tokens.txt`
-3. Open `main.py` (give it a star or you gay)
+3. start `install.bat` (give it a star or you gay)
 
 ## 📄・License
 This project is licensed under the GPL General Public License v3.0 License
