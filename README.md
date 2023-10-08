@@ -8,6 +8,7 @@ Discord.Bot is a discord tool that generates, deletes or joins bots for you in f
 ✔ Discord Bot Deleter
 ✔ Discord Bot Joiner
 ✔ Discord Bot Dm Spammer / Dm Fucker
+✔ Bot Pfp Changer!
 ✔ Saves Bot Token and The OAuth2 Link in different txt file
 ✔ Multi Threading
 ✔ Free Or Paid Proxies
