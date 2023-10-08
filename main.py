@@ -228,7 +228,7 @@ def bot_generator(session,token,name,intent):
                 print(f"{reset}[ {cyan}{time_rn}{reset} ] {gray}({red}-{gray}) {red}Ratelimit{gray}")
                 break
 
-def dm_fucker(bot_token,channel_id,allowed_user_id,bot_nickname):
+def dm_fucker(bot_token,channel_id,allowed_user_id,bot_nickname,bot_pfp):
     global total, application_created, enabled_intent, bot_tokens, failed, deleted, messages_send
     intents = discord.Intents.default()
     intents.members = True
@@ -236,8 +236,17 @@ def dm_fucker(bot_token,channel_id,allowed_user_id,bot_nickname):
     client = commands.Bot(command_prefix='!', intents=intents)
     @client.event
     async def on_ready():
-        print(f'{green}Bot Working!{reset}')
+        print(f'{reset}[ {green}+{reset} ]{cyan} Bot Working!{reset}')
         await client.user.edit(username=bot_nickname)
+        if bot_pfp:
+            try:
+                with open(bot_pfp, 'rb') as file:
+                    avatar_data = file.read()
+                    await client.user.edit(avatar=avatar_data)
+                    print(f"{reset}[ {green}+{reset} ]{blue} Changed Bot Pfp!{reset}")
+            except:
+                print(f"{reset}[ {red}-{reset} ]{red} Could't Change Bot Pfp!{reset}")
+
         channel = client.get_channel(channel_id)
         if channel:
             await channel.send('Bot Working!')
@@ -413,6 +422,9 @@ def main():
             bot_nickname = 'Z3R003 On Top'
         with open('bot_tokens.txt','r') as t:
             bot_tokens = t.read().splitlines()
+        change_bot_pfp = input(f'{cyan}[{blue}?{cyan}] Change bot pfp? (y,n) > ')
+        if change_bot_pfp == 'y' or change_bot_pfp == 'yes':
+            bot_pfp = input(f'{cyan}[{blue}?{cyan}] image files name or path | Example("Preview.PNG") > ')
         input(f'''
 {red}- How to use?{reset}
 ------------- {blue}
@@ -422,7 +434,7 @@ def main():
 Enter to continue!
 ''')
         for bot_token in bot_tokens:
-            t = threading.Thread(target=dm_fucker, args=(bot_token, channel_id,allowed_user_id,bot_nickname))
+            t = threading.Thread(target=dm_fucker, args=(bot_token, channel_id,allowed_user_id,bot_nickname,bot_pfp))
             t.start()
             threads.append(t)
         update_title_threads = threading.Thread(target=dm_fucker_title)
